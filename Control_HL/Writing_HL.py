@@ -163,6 +163,22 @@ def Start_trajectory(base, base_cyclic, Nu, D):
         print(result.trajectory_error_report)
         return finished
 
+def parseforSpeed(s):
+
+    match(s):
+
+        case 's':
+
+            return 'slow'
+
+        case 'm':
+
+            return'medium'
+
+        case 'f':
+
+            return '200Hz'
+
 def main():
     # Import the utilities helper module
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -172,6 +188,8 @@ def main():
     args = utilities.parseConnectionArguments()
     WrIn = input('Select Writing to draw ( 1-8 ): ').lower().strip()
 
+    SpeedInput = input('Select speed to draw at ( s m f ): ').lower().strip()
+
     if not ( 0 < int(WrIn) < 9 ): 
         WrIn = '1'
 
@@ -179,7 +197,8 @@ def main():
 
     print('Opening Trajectory of Joint Targets :  ')
     #Joint_data
-    with open('1-Workspace\examples\PassiveHandwritting\Joint-ArabicWirting-200Hz\Joint_Writing_' + WrIn + '.json','r') as fp:
+
+    with open('1-Workspace\examples\PassiveHandwritting\Joint-ArabicWriting-' + parseforSpeed(SpeedInput) + '\\Joint_Writing_' + WrIn + '.json','r') as fp:
     #with open('1-Workspace\examples\PassiveHandwritting\Joint_data.json', 'r') as fp: 
         Nu = json.load(fp)
     # Create connection to the device and get the router
