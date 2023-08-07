@@ -1,7 +1,12 @@
 ###
+#
+# Demetrios Orton-Hatzis
+# 2023-08-07 
+#
 # Built Using exemplary code from  
 # KINOVA (R) KORTEX (TM)
 # 01-compute-kinematics.py
+#
 ###
 
 import sys
