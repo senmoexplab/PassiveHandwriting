@@ -196,7 +196,7 @@ def main():
                 
     print('Opening Trajectory of Joint Targets :  ')
     #Joint_data
-    with open('1-Workspace\examples\PassiveHandwritting\Joint-Shapes-200Hz\\' + parseforFile(shapeInput) + '.json','r') as fp:
+    with open('1-Workspace\PassiveHandwriting\WritingSamples\Joint-Shapes-200Hz\\' + parseforFile(shapeInput) + '.json','r') as fp:
         Nu = json.load(fp)
     # Create connection to the device and get the router
     with utilities.DeviceConnection.createTcpConnection(args) as router:
