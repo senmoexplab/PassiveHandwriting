@@ -125,8 +125,9 @@ def Start_trajectory(base, base_cyclic, Nu, D):
     base_servo_mode.servoing_mode = Base_pb2.SINGLE_LEVEL_SERVOING
     base.SetServoingMode(base_servo_mode)
 
-    sample = 4   
+    SpeedInput = input('Select speed to draw at Slow, Medium or Fast ( S M F ): ').lower().strip()
 
+    sample = 4   
     seq_len = len(Nu[0][::sample]) 
 
     waypoints = Base_pb2.WaypointList()
@@ -140,7 +141,7 @@ def Start_trajectory(base, base_cyclic, Nu, D):
 
         waypoint.angular_waypoint.CopyFrom(
             populateAngularPose((Nu[0][i*sample], Nu[1][i*sample],  Nu[2][i*sample], Nu[3][i*sample], Nu[4][i*sample],  Nu[5][i*sample]) ,
-                                 ( (D[1+i*sample])*sample))
+                                 ( (D[1+i*sample])*sample*parseforSpeed(SpeedInput)))
         )
     
     SkipValidation = input('Skip the validation Step? (y/n): ').lower().strip() == 'y'
@@ -191,6 +192,15 @@ def parseforFile(s):
             return 'Joint_Vertical'
         case _:
             return 'Joint_Circle'
+
+def parseforSpeed(s):
+    match(s):
+        case 's':
+            return 2
+        case 'm':
+            return 1.5
+        case 'f':
+            return 1
 
 def main():
     # Import the utilities helper module

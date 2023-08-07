@@ -125,6 +125,8 @@ def Start_trajectory(base, base_cyclic, Nu, D):
     base_servo_mode.servoing_mode = Base_pb2.SINGLE_LEVEL_SERVOING
     base.SetServoingMode(base_servo_mode)
 
+    SpeedInput = input('Select speed to draw at Slow, Medium or Fast ( S M F ): ').lower().strip()
+    
     sample = 4   
     seq_len = len(Nu[0][::sample]) 
 
@@ -139,7 +141,7 @@ def Start_trajectory(base, base_cyclic, Nu, D):
 
         waypoint.angular_waypoint.CopyFrom(
             populateAngularPose((Nu[0][i*sample], Nu[1][i*sample],  Nu[2][i*sample], Nu[3][i*sample], Nu[4][i*sample],  Nu[5][i*sample]) ,
-                                 ( (D[1+i*sample])*sample))
+                                 ( (D[1+i*sample])*sample*parseforSpeed(SpeedInput)))
         )
     
     SkipValidation = input('Skip the validation Step? (y/n): ').lower().strip() == 'y'
@@ -171,20 +173,13 @@ def Start_trajectory(base, base_cyclic, Nu, D):
         return finished
 
 def parseforSpeed(s):
-
     match(s):
-
         case 's':
-
-            return 'slow'
-
+            return 2
         case 'm':
-
-            return'medium'
-
+            return 1.5
         case 'f':
-
-            return '200Hz'
+            return 1
 
 def main():
     # Import the utilities helper module
@@ -195,8 +190,6 @@ def main():
     args = utilities.parseConnectionArguments()
     WrIn = input('Select Writing to draw ( 1-8 ): ').lower().strip()
 
-    SpeedInput = input('Select speed to draw at ( s m f ): ').lower().strip()
-
     if not ( 0 < int(WrIn) < 9 ): 
         WrIn = '1'
 
@@ -205,7 +198,7 @@ def main():
     print('Opening Trajectory of Joint Targets :  ')
     #Joint_data
 
-    with open('1-Workspace\PassiveHandwriting\WritingSamples\Joint-ArabicWriting-' + parseforSpeed(SpeedInput) + '\\Joint_Writing_' + WrIn + '.json','r') as fp:
+    with open('1-Workspace\PassiveHandwriting\WritingSamples\Joint-ArabicWriting-200Hz\Joint_Writing_' + WrIn + '.json','r') as fp:
     #with open('1-Workspace\examples\PassiveHandwritting\Joint_data.json', 'r') as fp: 
         Nu = json.load(fp)
     # Create connection to the device and get the router
