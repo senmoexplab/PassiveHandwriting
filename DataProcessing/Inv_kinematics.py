@@ -1,15 +1,7 @@
-#! /usr/bin/env python3
-
 ###
+# Built Using exemplary code from  
 # KINOVA (R) KORTEX (TM)
-#
-# Copyright (c) 2018 Kinova inc. All rights reserved.
-#
-# This software may be modified and distributed
-# under the terms of the BSD 3-Clause license.
-#
-# Refer to the LICENSE file for details.
-#
+# 01-compute-kinematics.py
 ###
 
 import sys
@@ -18,18 +10,14 @@ import json
 import numpy as np
 
 from kortex_api.autogen.client_stubs.BaseClientRpc import BaseClient
-
 from kortex_api.autogen.messages import Base_pb2
 from kortex_api.Exceptions.KServerException import KServerException
 
 
 def load_points_and_pose(Path = 'data.json'):
-    
     with open(Path,'r') as fp:
         XYZ = json.load(fp)
-
     return XYZ['X'], XYZ['Y'], XYZ['Z'], XYZ['Duration']
-
 
 def inv_kinematics(base, x, y, z, D, theta_x=170, theta_y=10, theta_z = 90):
     # get robot's pose (by using forward kinematics)
@@ -47,9 +35,6 @@ def inv_kinematics(base, x, y, z, D, theta_x=170, theta_y=10, theta_z = 90):
     input_IkData = Base_pb2.IKData()
 
     for i in range(len(x)):
-        #print('Start of loop #{} : {}, {}, {} '.format(i, mod_theta_x, mod_theta_y, mod_theta_z))
-
-
         # Fill the IKData Object with the cartesian coordinates that need to be converted
         input_IkData.cartesian_pose.x = x[i]
         input_IkData.cartesian_pose.y = y[i]
@@ -106,16 +91,6 @@ def inv_kinematics(base, x, y, z, D, theta_x=170, theta_y=10, theta_z = 90):
 
     with open('1-Workspace\examples\PassiveHandwritting\Joint_data.json', 'w') as fp:
         json.dump(Nu_data, fp)
-
-        
-        
-
-
-    #print("Joint ID : Joint Angle")
-    #joint_identifier = 0
-    #for joint_angle in computed_joint_angles.joint_angles :
-    #    print(joint_identifier, " : ", joint_angle.value)
-    #    joint_identifier += 1
 
     return True
 
